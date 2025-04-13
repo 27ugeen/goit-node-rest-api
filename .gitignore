@@ -1,0 +1,33 @@
+# Node modules
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Env and config
+.env
+
+# IDE / Editor folders
+.vscode/
+.idea/
+
+# Test coverage
+coverage/
+
+# Optional: MacOS Spotlight files
+.AppleDouble
+.LSOverride
+
+# Optional: npm cache directory
+.npm/
+
+# Optional: lock file
+package-lock.json
