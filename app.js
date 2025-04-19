@@ -7,6 +7,11 @@ import { connectDB } from "./db/db.js";
 import contactsRouter from "./routes/contactsRouter.js";
 import authRouter from "./routes/authRouter.js";
 
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
 await connectDB();
 
 const app = express();
@@ -17,6 +22,8 @@ app.use(express.json());
 
 app.use("/api/auth", authRouter);
 app.use("/api/contacts", contactsRouter);
+
+app.use("/avatars", express.static(path.join(__dirname, "public/avatars")));
 
 app.use((_, res) => {
   res.status(404).json({ message: "Route not found" });
