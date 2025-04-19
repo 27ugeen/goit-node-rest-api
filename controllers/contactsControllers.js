@@ -1,10 +1,17 @@
-import contactsService from "../services/contactsServices.js";
+import {
+  listContacts,
+  getContactById,
+  removeContact,
+  addContact,
+  updateContact as updateContactService,
+  updateStatusContact,
+} from "../services/contactsServices.js";
 import HttpError from "../helpers/HttpError.js";
 
 // GET /api/contacts
 export const getAllContacts = async (req, res, next) => {
   try {
-    const result = await contactsService.listContacts();
+    const result = await listContacts();
     res.status(200).json(result);
   } catch (error) {
     next(error);
@@ -15,7 +22,7 @@ export const getAllContacts = async (req, res, next) => {
 export const getOneContact = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const contact = await contactsService.getContactById(id);
+    const contact = await getContactById(id);
     if (!contact) throw HttpError(404);
     res.status(200).json(contact);
   } catch (error) {
@@ -27,7 +34,7 @@ export const getOneContact = async (req, res, next) => {
 export const deleteContact = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const removed = await contactsService.removeContact(id);
+    const removed = await removeContact(id);
     if (!removed) throw HttpError(404);
     res.status(200).json(removed);
   } catch (error) {
@@ -39,7 +46,7 @@ export const deleteContact = async (req, res, next) => {
 export const createContact = async (req, res, next) => {
   try {
     const { name, email, phone } = req.body;
-    const newContact = await contactsService.addContact(name, email, phone);
+    const newContact = await addContact(name, email, phone);
     res.status(201).json(newContact);
   } catch (error) {
     next(error);
@@ -49,7 +56,19 @@ export const createContact = async (req, res, next) => {
 export const updateContact = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const updatedContact = await contactsService.updateContact(id, req.body);
+    const updatedContact = await updateContactService(id, req.body);
+    if (!updatedContact) throw HttpError(404);
+    res.status(200).json(updatedContact);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// PATCH /api/contacts/:id/favorite
+export const updateFavorite = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const updatedContact = await updateStatusContact(id, req.body);
     if (!updatedContact) throw HttpError(404);
     res.status(200).json(updatedContact);
   } catch (error) {
