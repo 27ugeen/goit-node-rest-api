@@ -4,6 +4,10 @@ import cors from "cors";
 
 import contactsRouter from "./routes/contactsRouter.js";
 
+import { connectDB } from "./db/db.js";
+
+await connectDB();
+
 const app = express();
 
 app.use(morgan("tiny"));
