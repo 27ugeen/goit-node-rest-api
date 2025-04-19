@@ -12,11 +12,8 @@ import auth from "../middlewares/authMiddleware.js";
 const authRouter = express.Router();
 
 authRouter.post("/register", validateBody(registerSchema), register);
-
 authRouter.post("/login", validateBody(loginSchema), login);
-
 authRouter.post("/logout", auth, logout);
-
 authRouter.get("/current", auth, getCurrent);
 
 export default authRouter;

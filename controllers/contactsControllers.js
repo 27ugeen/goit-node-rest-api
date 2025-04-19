@@ -12,7 +12,7 @@ import HttpError from "../helpers/HttpError.js";
 // GET /api/contacts
 export const getAllContacts = async (req, res, next) => {
   try {
-    const result = await listContacts();
+    const result = await listContacts(req.user.id);
     res.status(200).json(result);
   } catch (error) {
     next(error);
@@ -23,7 +23,7 @@ export const getAllContacts = async (req, res, next) => {
 export const getOneContact = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const contact = await getContactById(id);
+    const contact = await getContactById(id, req.user.id);
     if (!contact) throw HttpError(404);
     res.status(200).json(contact);
   } catch (error) {
@@ -35,7 +35,7 @@ export const getOneContact = async (req, res, next) => {
 export const deleteContact = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const removed = await removeContact(id);
+    const removed = await removeContact(id, req.user.id);
     if (!removed) throw HttpError(404);
     res.status(200).json(removed);
   } catch (error) {
@@ -47,7 +47,7 @@ export const deleteContact = async (req, res, next) => {
 export const createContact = async (req, res, next) => {
   try {
     const { name, email, phone } = req.body;
-    const newContact = await addContact(name, email, phone);
+    const newContact = await addContact(name, email, phone, req.user.id);
     res.status(201).json(newContact);
   } catch (error) {
     next(error);
@@ -57,7 +57,11 @@ export const createContact = async (req, res, next) => {
 export const updateContact = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const updatedContact = await updateContactService(id, req.body);
+    const updatedContact = await updateContactService(
+      id,
+      req.body,
+      req.user.id
+    );
     if (!updatedContact) throw HttpError(404);
     res.status(200).json(updatedContact);
   } catch (error) {
@@ -69,7 +73,7 @@ export const updateContact = async (req, res, next) => {
 export const updateFavorite = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const updatedContact = await updateStatusContact(id, req.body);
+    const updatedContact = await updateStatusContact(id, req.body, req.user.id);
     if (!updatedContact) throw HttpError(404);
     res.status(200).json(updatedContact);
   } catch (error) {
@@ -80,7 +84,7 @@ export const updateFavorite = async (req, res, next) => {
 // POST /api/contacts/bulk
 export const createManyContacts = async (req, res, next) => {
   try {
-    const result = await bulkAddContacts(req.body);
+    const result = await bulkAddContacts(req.body, req.user.id);
     res.status(201).json(result);
   } catch (error) {
     next(error);
