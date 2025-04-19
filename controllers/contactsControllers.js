@@ -5,6 +5,7 @@ import {
   addContact,
   updateContact as updateContactService,
   updateStatusContact,
+  bulkAddContacts,
 } from "../services/contactsServices.js";
 import HttpError from "../helpers/HttpError.js";
 
@@ -71,6 +72,16 @@ export const updateFavorite = async (req, res, next) => {
     const updatedContact = await updateStatusContact(id, req.body);
     if (!updatedContact) throw HttpError(404);
     res.status(200).json(updatedContact);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// POST /api/contacts/bulk
+export const createManyContacts = async (req, res, next) => {
+  try {
+    const result = await bulkAddContacts(req.body);
+    res.status(201).json(result);
   } catch (error) {
     next(error);
   }

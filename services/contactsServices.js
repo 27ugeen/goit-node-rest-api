@@ -38,3 +38,10 @@ export async function updateStatusContact(contactId, body) {
   await contact.update(body);
   return contact;
 }
+
+// POST /api/contacts/bulk
+export async function bulkAddContacts(contactsArray) {
+  return await Contact.bulkCreate(contactsArray, {
+    ignoreDuplicates: true,
+  });
+}

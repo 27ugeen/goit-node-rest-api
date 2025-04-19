@@ -6,6 +6,7 @@ import {
   createContact,
   updateContact,
   updateFavorite,
+  createManyContacts,
 } from "../controllers/contactsControllers.js";
 import validateBody from "../helpers/validateBody.js";
 import {
@@ -31,5 +32,7 @@ contactsRouter.patch(
   validateBody(updateFavoriteSchema),
   updateFavorite
 );
+
+contactsRouter.post("/bulk", createManyContacts);
 
 export default contactsRouter;
